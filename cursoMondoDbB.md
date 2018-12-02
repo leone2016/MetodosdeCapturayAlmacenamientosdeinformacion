@@ -133,8 +133,8 @@ cursor.forEach( function(d) { d.valor = 100; db.test.save( d ); } )|edita la col
   nombreCampo: 1 | ASC ascendente
   nombreCampo: -1 | DESC descendente
   
-  Codigo mongoDB | Explicación 
-  ------------- | -------------
+ Codigo mongoDB | Explicación 
+------------- | -------------
 db.libros.find().count() | contador de documentos
 db.libros.find().sort( { numero: -1 } ) | ordena de forma descendente
 db.libros.find().sort( { numero: 1 } ) | ordena de forma ascendente
