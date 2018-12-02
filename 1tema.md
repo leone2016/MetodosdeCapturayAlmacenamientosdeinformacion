@@ -78,3 +78,13 @@ db.usuarios.update( { nombre: "DMQ"}, { $set: { nombre:"DMQ2", barrio:52 }}, { m
  
  ## Between
  
+    libro1 = { "nombre" : "Ël Hobbit", "autor" : "J.R.R Tolkien", "numero" : 100.0, "unidad" : "millones", "idioma" : "ingles",  "primera_edicion" : 1937}
+    libro2 = { "nombre" : "Ël Señor de los anillos","autor" : "J.R.R Tolkien","numero" : 150.0,"unidad" : "millones","idioma" : "ingles","primera_edicion" : 1954}
+    libro3 = { "nombre" : "El principito","autor" : "Antonie de Saint-Exepéry","numero" : 140.0,"unidad" : "millones","idioma" : "frances","primera_edicion" : 1943}
+    libro4 = { "nombre" : "Historia de dos cuidades","autor" : "Charles Dicken","numero" : 200.0,"unidad" : "millones","idioma" : "ingles","primera_edicion" : 1859}
+    libro5 = { "nombre" : "Sueño en el pabellon rojo","autor" : "Cao Xuequin","numero" : 100.0, "unidad" : "millones", "idioma" : "chino","primera_edicion" : 2001}
+    libro6 = { "nombre" : "Diez Negritos", "autor" : "Agata Christie", "numero" : 99.0, "unidad" : "millones", "idioma" : "ingles", "primera_edicion" : 1939.0}
+    libro7 = { "nombre" : "El codigo Da Vinci","autor" : "Dan Bronw","numero" : 80.0,"unidad" : "millones","idioma" : "ingles","primera_edicion" : 2003.0}
+    libro8 = { "nombre" : "El nombre de la rosa", "autor" : "Umberto Eco","numero" : 50.0,"unidad" : "millones","idioma" : "ingles", "primera_edicion" : 1980.0}
+
+ db.libros.insert([libro1,libro2])
