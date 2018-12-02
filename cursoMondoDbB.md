@@ -182,7 +182,43 @@ db.usuarios.update( {}, {$push: { valores {$each: [], $sort:1 } } } ) |ordena to
  db.usuarios.find({ ejemplo:{$in:["PHP7", "Java EE "]} }) | buscar el usuarios que sepa PHP7
  db.usuarios.find({ ejemplo:{$nin:["C#"]} }) | muestrame quien no sabe C#
  
- # Tarea 1
+ # Laboratorio 1 maestria [UNIR](https://ecuador.unir.net/ingenieria/maestria-visual-analytics-big-data/549201969287/)
+  
+> Descarga la versión gratuita del software [MongoBooster](http://mongobooster.com) para la administración de bases de datos MongoDB. En la página del proveedor podrás seleccionar la versión del sistema operativo que utilices habitualmente: Windows, MacOS, Linux.
+
+##### Descripción del Laboratorio
+
+> El objetivo de laboratorio es la adquisición de las destrezas básicas de generación de bases de datos MongoDB con una aplicación de administración con interfaz gráfica. Para ello, se proporcionará un catálogo de datos con una estructura de datos no basada en JSON y un conjunto de queries Mongo. Deberás estructurar una base de datos e insertar los datos proporcionados de forma que las queries tengan el resultado esperado.
+
+##### Diseño de la aplicacion MondoDB
+>El dueño de un gimnasio posee una base de datos en MongoDB que guarda datos de usuario con un formato parecido al siguiente:
+
+```javascript
+{
+   "_id" : "Leonardo Medina",
+   "joined" : ISODate("2017-12-03"),
+   "sports" : ["motor", "futbol", "ciclismo"]
+}
+
+
+```
+
+El dueño no tiene conocimientos sobre la realización de consultas y encarga a un informático una forma óptima para saber los siguientes puntos:
+
+* Listar los usuarios alfabéticamente, con el nombre en mayúsculas.
+* Listar los usuarios ordenándolos por la fecha de admisión.
+* Devolver el número total de usuario que se han apuntado al gimnasio por mes.
+* Listar los 3 deportes que más gustan mostrando el número de apariciones.
+* Listar todos los deportes
+
+Debes entregar un documento donde describas el comando utilizado para obtener cada una de los puntos anteriormente descritos utilizando el comando find(), distinct(), aggregate y Map-Reduce, si es posible. Intente realizar estas búsquedas sobre un número grande de registros y comentar las ventajas y diferencias de cada forma utilizada.
+
+### RESOLUCION LABORATORIO 1 
+
+paso 1: [Descargar](https://github.com/leone2016/MetodosdeCapturayAlmacenamientosdeinformacion/blob/master/gym.csv) la base de datos con los 5876 registros 
+* el csv tiene un formato names;month;day;year 
+paso 2: Importar los datos utilizando MongoBooster
+
  var sports = ["motos","Futbol","Ciclismo", "Box", "Atletismo", "Natación", "Basket", "Tenis","Ciclismo", "Alterofilia","Volley" ]
  
   Math.floor(Math.random()*( sports.length - 0))+0 | crea numeros randomicos
