@@ -77,9 +77,11 @@ db.usuarios.update( { nombre: "DMQ"}, { $set: { nombre:"DMQ2", barrio:52 }}, { m
  db.dropDatabase()| borra la base de datos
  
  ## Between
+
+> copiar los 8 libos en la consola de cmd
  
-    libro1 = { "nombre" : "Ël Hobbit", "autor" : "J.R.R Tolkien", "numero" : 100.0, "unidad" : "millones", "idioma" : "ingles",  "primera_edicion" : 1937}
-    libro2 = { "nombre" : "Ël Señor de los anillos","autor" : "J.R.R Tolkien","numero" : 150.0,"unidad" : "millones","idioma" : "ingles","primera_edicion" : 1954}
+    libro1 = { "nombre" : "El Hobbit", "autor" : "J.R.R Tolkien", "numero" : 100.0, "unidad" : "millones", "idioma" : "ingles",  "primera_edicion" : 1937}
+    libro2 = { "nombre" : "El Señor de los anillos","autor" : "J.R.R Tolkien","numero" : 150.0,"unidad" : "millones","idioma" : "ingles","primera_edicion" : 1954}
     libro3 = { "nombre" : "El principito","autor" : "Antonie de Saint-Exepéry","numero" : 140.0,"unidad" : "millones","idioma" : "frances","primera_edicion" : 1943}
     libro4 = { "nombre" : "Historia de dos cuidades","autor" : "Charles Dicken","numero" : 200.0,"unidad" : "millones","idioma" : "ingles","primera_edicion" : 1859}
     libro5 = { "nombre" : "Sueño en el pabellon rojo","autor" : "Cao Xuequin","numero" : 100.0, "unidad" : "millones", "idioma" : "chino","primera_edicion" : 2001}
@@ -87,4 +89,29 @@ db.usuarios.update( { nombre: "DMQ"}, { $set: { nombre:"DMQ2", barrio:52 }}, { m
     libro7 = { "nombre" : "El codigo Da Vinci","autor" : "Dan Bronw","numero" : 80.0,"unidad" : "millones","idioma" : "ingles","primera_edicion" : 2003.0}
     libro8 = { "nombre" : "El nombre de la rosa", "autor" : "Umberto Eco","numero" : 50.0,"unidad" : "millones","idioma" : "ingles", "primera_edicion" : 1980.0}
 
- db.libros.insert([libro1,libro2])
+> insertar los 8 libros
+
+ ````
+ db.libros.insert([ libro1,libro2, libro3, libro4, libro5, libro6, libro7, libro8 ])
+ ````
+ #### OPERADORES BÁSICOS
+  Codigo mongoDB | Explicación 
+   ------------- | -------------
+  $gt > |mayor que
+  $gte >= |mayor ó igual que
+  $lt < |menor que
+  $lte <= | menor ó igual que
+  
+ > db.libros.find( { condicion1:{$gt:{}, $lt:{} }, conicion2:{}, n:{} }, { elemento:1 })
+ 
+  Codigo mongoDB | Explicación 
+  ------------- | -------------
+db.libros.find({}, {nombre:1})|solo devuelve el nombre con su ID por defecto
+db.libros.find({}, {nombre:1, _id:0})|sin _id   
+db.libros.find( { primera_edicion: { $gt: 2000 } } ) | libros que sean mayor a año 2000 en la primera edicion
+db.libros.find({ primera_edicion: {$gt:1940,$lte:2000}}, {nombre:1}) | **nombres** de libros en la primera edición entre el año 1940 y 2000 
+db.libros.find({ primera_edicion: {$gt:1940,$lte:2000}, numero: { $gte: 140} }, {nombre:1}) |  nombre de libros entre el año 1940 y el 2000 que haya vendido(numero:{}) mas o igual a 140 unidades
+
+## Cursores
+
+* el cursor solo se puede utilizar una vez
