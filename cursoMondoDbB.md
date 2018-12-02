@@ -115,3 +115,105 @@ db.libros.find({ primera_edicion: {$gt:1940,$lte:2000}, numero: { $gte: 140} }, 
 ## Cursores
 
 * el cursor solo se puede utilizar una vez
+* cada find devuelve un cursor pero hasta ahora solo se trabajo como lectura
+* it se uiliza para ver el resto de datos en la colección en el caso de ser mayor a 20
+
+  Codigo mongoDB | Explicación 
+  ------------- | -------------
+ for ( i=0; i<100; i++){ db.test.insert( { valor:i } ) } | inserta 100 documentos
+var cursor =   db.test.find() | guarda la consulta para ser ejecutada una sola vez
+cursor.forEach( function(d) { print( d.valor ) } ) | muestra los 100 documentos del 0 al 99
+cursor.forEach( function(d) { d.valor = 100; db.test.save( d ); } )|edita la colección 
+
+#### Metodos de cursores
+* db.libros => se encuentra en la parte de arriba, ejecute y continue
+
+  Codigo mongoDB | Explicación 
+  ------------- | -------------
+  nombreCampo: 1 | ASC ascendente
+  nombreCampo: -1 | DESC descendente
+  
+  Codigo mongoDB | Explicación 
+  ------------- | -------------
+db.libros.find().count() | contador de documentos
+db.libros.find().sort( { numero: -1 } ) | ordena de forma descendente
+db.libros.find().sort( { numero: 1 } ) | ordena de forma ascendente
+db.libros.find().sort( { valor: -1 } ).limit( 3 ) | muesta los primeros 3 
+db.libros.find().sort( { numero: -1 } ).skip(1).limit( 1 ) | muestra el 2do libro mas vendido(numero), skip salta la primera posición y limit solo muestra el primer documento
+var test = db.libros.find().sort( { numero: -1 } ).skip(1).limit( 1 ).size() | realiza un conteo de registros desplegados
+
+
+## Arreglos
+
+* en base de datos se tiene relaciones 1 - n (uno a muchos)
+* en mongoDB permite crear arreglos con la idea de tener relaciones
+* diferencia entre addToSet vs push : addToset el valor a ingresar, primero verifica si existe caso contrario lo agrega, push agrega al final del arreglo si importar si existe o no 
+
+ Codigo mongoDB | Explicación 
+  ------------- | -------------
+var arreglo = [1,2,3] | arreglo básico
+var usuario = { nombre: "test", valores: arreglo } |  documento con arreglo
+db.usuarios.insert( usuario ) | guarga en coleccion
+db.usuarios.update( {}, {$addToSet: { valores: 4 } } ) | agrega un nuevo valor a valores, resultado ````  "valores" : [ 1, 2, 3, 4 ] ````
+db.usuarios.update( {}, {$push: { valores: 4 } } ) | agrega un nuevo valor  al final del arreglo , ````  "valores" : [ 1, 2, 3, 4, 4 ] ````
+db.usuarios.update( {}, {$push: { valores: {$each : [5,6,7,8,9,10] } } } ) | agrega un arreglo, itira  por medio del $each un arreglo para ser inglesados al arreglo  valores, ````  "valores" : [ 1, 2, 3, 4, 4 ,5, 6, 7, 8, 9, 10 ] ````
+db.usuarios.update( {}, {$push: { valores: {$each : [2.5] , $position: 2 } } } ) | $position agrega un elemento en la posicion 2,  resultado  ````  "valores" : [ 1, 2, 2.5, 3, 4, 4, 5, 6, 7, 8, 9, 10 ] ````
+db.usuarios.update( {}, {$push: { valores: {$each : [3.5,4.5,8.6] , $sort:1} } } ) | agrega los valores de forma descendente, resultado  ````  "valores" : [ 1, 2, 2.5, 3, 3.5, 4, 4, 4.5, 5, 6, 7, 8, 8.6, 9, 10 ] ```` 
+db.usuarios.update( {}, {$push: { valores: {$each : [0]} } } ) | guarda un cero al final del arreglo
+db.usuarios.update( {}, {$push: { valores {$each: [], $sort:1 } } } ) |ordena todos los documentos de la coleccion por medio del **UPDATE**    
+ 
+ ##### Eliminar elementos del Arreglo
+ Codigo mongoDB | Explicación 
+ ------------- | -------------
+ db.usuarios.update({}, {$pull : { valores: 2.5 }}) | elimina del arreglo el valor 2.5
+ db.usuarios.update({}, {$pull : { valores: {$gte: 8} }}) | elimina los valores mayores o igual a 8
+ db.usuarios.update({}, {$pullAll : { valores: [4.5,3.5] }}) | elimina los elementos 4.5 y 3.5 
+ 
+ #### Select arreglos
+ 
+ var arreglo = ["PHP7", "Java EE ", "Pyton", "TypeScript", "JavaScript"]
+ var usuario = { nombre: "Leonardo Medina", ejemplo: arreglo } 
+ 
+  Codigo mongoDB | Explicación 
+  ------------- | -------------
+ db.usuarios.find({}, {_id:false, ejemplo:true} ) | _id:false > no visualiza id :: ejemplo:true > visualiza campo **ejemplo**
+ db.usuarios.find({}, {_id:false, ejemplo:{$slice : 3}} ) | retorna solo tres elementos del arreglo **ejemplo**
+ db.usuarios.find({}, {_id:false, ejemplo:{$slice : [1,3]}} ) | muestra desde la posición 1 a la 3 
+ db.usuarios.find({ ejemplo:{$in:["PHP7", "Java EE "]} }) | buscar el usuarios que sepa PHP7
+ db.usuarios.find({ ejemplo:{$nin:["C#"]} }) | muestrame quien no sabe C#
+ 
+ # Tarea 1
+ var sports = ["motos","Futbol","Ciclismo", "Box", "Atletismo", "Natación", "Basket", "Tenis","Ciclismo", "Alterofilia","Volley" ]
+ 
+  Math.floor(Math.random()*( sports.length - 0))+0 | crea numeros randomicos
+
+ * var test = db.gym.find();
+ * test.forEach( function(d){ d.joined= new Date( d.year,d.month,d.day ); db.gym.save(d); })
+ * db.gym.update({},{$unset:{"year":"",day:"",month:""}}, {multi:true})
+ ```Js
+ 
+var Arraysports = ["motos","Futbol","Ciclismo", "Box", "Atletismo", "Natación", "Basket", "Tenis","Ciclismo", "Alterofilia","Volley" ]
+var gymCollection = db.gym.find();
+gymCollection.forEach((user)=> { 
+    var ArraySport = [];
+    for(var i=0;i<3;i++){
+     var deporte = (Arraysports[Math.floor(Math.random()*( Arraysports.length - 0))+0]);
+     var verifica=false;
+        for(var j=0;j<ArraySport.length;j++){
+             if(ArraySport[j]==deporte){
+                 verifica = true;
+                 break;
+             }
+        }
+        if(!verifica){
+            ArraySport.push(deporte) 
+        }
+    }
+    user.sports = ArraySport;
+    db.gym.update({"_id":user._id},user);
+
+});
+
+
+db.gym.findOne();
+ ```
